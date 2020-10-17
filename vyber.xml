@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://modeler.netgrif.com/petriflow_schema.xsd">
+    <id>objednavka_piva_3_6</id>
+    <version>1.0.0</version>
+    <initials>NEW</initials>
+    <title>Objednávka piva 3_6</title>
+    <icon>home</icon>
+    <defaultRole>true</defaultRole>
+    <transitionRole>false</transitionRole>
+    <!-- TRANSACTIONS -->
+    <!-- ROLES -->
+    <role>
+        <id>admin</id>
+        <title>Admin</title>
+    </role>
+    <role>
+        <id>zakaznik</id>
+        <title>Zákazník</title>
+    </role>
+    <!-- DATA -->
+
+    <data type="enumeration">
+        <id>druhy_piva</id>
+        <title></title>
+        <values>12</values>
+        <values>IPA</values>
+        <values>Čierne</values>
+        <values>APA</values>
+        <values>EPA</values>
+        <values>EJL</values>
+        <values>14</values>
+        <values>Radler</values>
+    </data>
+
+    <data type="enumeration">
+        <id>pivo1</id>
+        <title>Vyber si druh piva</title>
+        <action trigger="get">
+            pivo: f.pivo1;
+
+            def choices = useCase.petriNet.dataSet["druhy_piva"].choices
+            change pivo choices { choices }
+        </action>
+    </data>
+    <data type="number">
+        <id>mnozstvo_piva1</id>
+        <title>Množstvo piva</title>
+        <action trigger="set">
+            pivo: f.pivo1,
+            mnozstvo_piva: f.mnozstvo_piva1,
+            transition: t.2,
+            button: f.pridat_pivo_2;
+
+            if (pivo.value &amp;&amp; mnozstvo_piva.value &gt; 0) {
+            make button, editable on transition when { true }
+            }
+
+        </action>
+    </data>
+    <data type="button">
+        <id>odstranit_pivo_1</id>
+        <title>Odstrániť pivo</title>
+        <action trigger="set">
+            pivo: f.pivo1,
+            mnozstvo_piva: f.mnozstvo_piva1,
+            disField: f.odstranit_pivo_1,
+            trans: t.2;
+
+            def choices = useCase.petriNet.dataSet["druhy_piva"].choices
+            change pivo choices { choices }
+
+            def zero = 0
+            change mnozstvo_piva zero { zero }
+
+            make pridat_pivo2, hidden on trans when { true }
+
+            make disField, hidden on trans when { true }
+
+        </action>
+    </data>
+    <data type="button">
+        <id>pridat_pivo_2</id>
+        <title>Pridať ďalšie pivo</title>
+        <action trigger="set">
+            pivo2: f.pivo2,
+            mnozstvo_piva2: f.mnozstvo_piva2,
+            disField: f.pridat_pivo_2,
+            <!--            odstranit_pivo1: f.odstranit_pivo_1,-->
+            odstranit_pivo2: f.odstranit_pivo_2,
+            pridat_pivo: f.pridat_pivo_3,
+            trans: t.2;
+
+            make pivo2, required on trans when { true }
+            make mnozstvo_piva2, required on trans when { true }
+
+            make pridat_pivo, editable on trans when { true }
+            <!--            make odstranit_pivo1, editable on trans when { true }-->
+            make odstranit_pivo2, editable on trans when { true }
+
+            make disField, hidden on trans when { true }
+            make disField, optional on trans when { true }
+        </action>
+    </data>
+
+    <data type="enumeration">
+        <id>pivo2</id>
+        <title>Vyber si druh piva</title>
+        <action trigger="get">
+            pivo: f.pivo2;
+
+            def choices = useCase.petriNet.dataSet["druhy_piva"].choices
+            change pivo choices { choices }
+        </action>
+    </data>
+    <data type="number">
+        <id>mnozstvo_piva2</id>
+        <title>Množstvo piva</title>
+    </data>
+    <data type="button">
+        <id>odstranit_pivo_2</id>
+        <title>Odstrániť pivo</title>
+        <action trigger="set">
+            pivo: f.pivo2,
+            mnozstvo_piva: f.mnozstvo_piva2,
+            disField: f.odstranit_pivo_2,
+            pridat_pivo: f.pridat_pivo_3,
+            pridat_pivo2: f.pridat_pivo_2,
+            trans: t.2;
+
+            make pivo, optional on trans when { true }
+            make pivo, hidden on trans when { true }
+
+            make mnozstvo_piva, optional on trans when { true }
+            make mnozstvo_piva, hidden on trans when { true }
+
+            make disField, hidden on trans when { true }
+            make disField, optional on trans when { true }
+
+            make pridat_pivo, hidden on trans when { true }
+            make pridat_pivo, optional on trans when { true }
+
+            make pridat_pivo2, editable on trans when { true }
+
+        </action>
+    </data>
+    <data type="button">
+        <id>pridat_pivo_3</id>
+        <title>Pridať ďalšie pivo</title>
+        <action trigger="set">
+            pivo: f.pivo3,
+            mnozstvo_piva: f.mnozstvo_piva3,
+            disField: f.pridat_pivo_3,
+            pridat_pivo: f.pridat_pivo_4,
+            odstranit_pivo: f.odstranit_pivo_3,
+            trans: t.2;
+
+            make pivo, required on trans when { true }
+            make mnozstvo_piva, required on trans when { true }
+            make pridat_pivo, editable on trans when { true }
+            make odstranit_pivo, editable on trans when { true }
+
+            make disField, hidden on trans when { true }
+            make disField, optional on trans when { true }
+        </action>
+    </data>
+
+    <data type="enumeration">
+        <id>pivo3</id>
+        <title>Vyber si druh piva</title>
+        <action trigger="get">
+            pivo: f.pivo3;
+
+            def choices = useCase.petriNet.dataSet["druhy_piva"].choices
+            change pivo choices { choices }
+        </action>
+    </data>
+    <data type="number">
+        <id>mnozstvo_piva3</id>
+        <title>Množstvo piva</title>
+    </data>
+    <data type="button">
+        <id>odstranit_pivo_3</id>
+        <title>Odstrániť pivo</title>
+        <action trigger="set">
+            pivo: f.pivo3,
+            mnozstvo_piva: f.mnozstvo_piva3,
+            disField: f.odstranit_pivo_3,
+            pridat_pivo: f.pridat_pivo_4,
+            trans: t.2;
+
+            make pivo, optional on trans when { true }
+            make pivo, hidden on trans when { true }
+
+            make mnozstvo_piva, optional on trans when { true }
+            make mnozstvo_piva, hidden on trans when { true }
+
+            make disField, hidden on trans when { true }
+            make disField, optional on trans when { true }
+
+            make pridat_pivo, hidden on trans when { true }
+            make pridat_pivo, optional on trans when { true }
+
+        </action>
+    </data>
+    <data type="button">
+        <id>pridat_pivo_4</id>
+        <title>Pridať ďalšie pivo</title>
+        <action trigger="set">
+            pivo: f.pivo4,
+            mnozstvo_piva: f.mnozstvo_piva4,
+            odstranit_pivo: f.odstranit_pivo_4,
+            disField: f.pridat_pivo_4,
+            trans: t.2;
+
+            make pivo, required on trans when { true }
+            make mnozstvo_piva, required on trans when { true }
+            make disField, hidden on trans when { true }
+            make disField, optional on trans when { true }
+            make odstranit_pivo, editable on trans when { true }
+        </action>
+    </data>
+
+    <data type="enumeration">
+        <id>pivo4</id>
+        <title>Vyber si druh piva</title>
+        <action trigger="get">
+            pivo: f.pivo3;
+
+            def choices = useCase.petriNet.dataSet["druhy_piva"].choices
+            change pivo choices { choices }
+        </action>
+    </data>
+    <data type="number">
+        <id>mnozstvo_piva4</id>
+        <title>Množstvo piva</title>
+    </data>
+    <data type="button">
+        <id>odstranit_pivo_4</id>
+        <title>Odstrániť pivo</title>
+        <action trigger="set">
+            pivo: f.pivo4,
+            mnozstvo_piva: f.mnozstvo_piva4,
+            disField: f.odstranit_pivo_4,
+            trans: t.2;
+
+            make pivo, optional on trans when { true }
+            make pivo, hidden on trans when { true }
+
+            make mnozstvo_piva, optional on trans when { true }
+            make mnozstvo_piva, hidden on trans when { true }
+
+            make disField, hidden on trans when { true }
+            make disField, optional on trans when { true }
+        </action>
+    </data>
+    <!-- I18NS -->
+    <!-- TRANSITIONS -->
+    <transition>
+        <id>2</id>
+        <x>380</x>
+        <y>220</y>
+        <layout>
+            <offset>0</offset>
+        </layout>
+        <label>Výber piva</label>
+        <assignPolicy>auto</assignPolicy>
+        <roleRef>
+            <id>admin</id>
+            <logic>
+                <perform>true</perform>
+                <cancel>true</cancel>
+            </logic>
+        </roleRef>
+        <roleRef>
+            <id>zakaznik</id>
+            <logic>
+                <perform>true</perform>
+                <cancel>true</cancel>
+            </logic>
+        </roleRef>
+        <dataGroup>
+            <id>1</id>
+            <title>Vyber si pivo</title>
+            <dataRef>
+                <id>pivo1</id>
+                <logic>
+                    <behavior>required</behavior>
+                    <behavior>editable</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>mnozstvo_piva1</id>
+                <logic>
+                    <behavior>required</behavior>
+                    <behavior>editable</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>pridat_pivo_2</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+        </dataGroup>
+        <dataGroup>
+            <id>2</id>
+            <title>Vyber si pivo 2</title>
+            <dataRef>
+                <id>pivo2</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>mnozstvo_piva2</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>odstranit_pivo_1</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>odstranit_pivo_2</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>pridat_pivo_3</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+        </dataGroup>
+        <dataGroup>
+            <id>3</id>
+            <title>Vyber si pivo 3</title>
+            <dataRef>
+                <id>pivo3</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>mnozstvo_piva3</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>odstranit_pivo_3</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>pridat_pivo_4</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+        </dataGroup>
+        <dataGroup>
+            <id>4</id>
+            <title>Vyber si pivo 4</title>
+            <dataRef>
+                <id>pivo4</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>mnozstvo_piva4</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+            <dataRef>
+                <id>odstranit_pivo_4</id>
+                <logic>
+                    <behavior>hidden</behavior>
+                </logic>
+            </dataRef>
+        </dataGroup>
+    </transition>
+    <transition>
+        <id>4</id>
+        <x>540</x>
+        <y>100</y>
+        <layout>
+            <offset>0</offset>
+        </layout>
+        <label>Pridať pivo</label>
+        <roleRef>
+            <id>zakaznik</id>
+            <logic>
+                <perform>true</perform>
+                <cancel>true</cancel>
+            </logic>
+        </roleRef>
+        <roleRef>
+            <id>admin</id>
+            <logic>
+                <perform>true</perform>
+                <cancel>true</cancel>
+            </logic>
+        </roleRef>
+    </transition>
+    <transition>
+        <id>5</id>
+        <x>540</x>
+        <y>380</y>
+        <layout>
+            <offset>0</offset>
+        </layout>
+        <label>Dokončiť objednávku</label>
+    </transition>
+    <!-- PLACES -->
+    <place>
+        <id>1</id>
+        <x>220</x>
+        <y>220</y>
+        <label>Chcem objednať pivo</label>
+        <tokens>1</tokens>
+        <static>false</static>
+    </place>
+    <place>
+        <id>3</id>
+        <x>540</x>
+        <y>220</y>
+        <label>Vybrané pivo</label>
+        <tokens>0</tokens>
+        <static>false</static>
+    </place>
+    <place>
+        <id>6</id>
+        <x>700</x>
+        <y>380</y>
+        <label>Objednávka dokončená</label>
+        <tokens>0</tokens>
+        <static>false</static>
+    </place>
+    <!-- ARCS -->
+    <arc>
+        <id>7</id>
+        <type>regular</type>
+        <sourceId>1</sourceId>
+        <destinationId>2</destinationId>
+        <multiplicity>1</multiplicity>
+    </arc>
+    <arc>
+        <id>8</id>
+        <type>regular</type>
+        <sourceId>2</sourceId>
+        <destinationId>3</destinationId>
+        <multiplicity>1</multiplicity>
+    </arc>
+    <arc>
+        <id>9</id>
+        <type>regular</type>
+        <sourceId>3</sourceId>
+        <destinationId>4</destinationId>
+        <multiplicity>1</multiplicity>
+    </arc>
+    <arc>
+        <id>10</id>
+        <type>regular</type>
+        <sourceId>4</sourceId>
+        <destinationId>1</destinationId>
+        <multiplicity>1</multiplicity>
+    </arc>
+    <arc>
+        <id>11</id>
+        <type>regular</type>
+        <sourceId>3</sourceId>
+        <destinationId>5</destinationId>
+        <multiplicity>1</multiplicity>
+    </arc>
+    <arc>
+        <id>12</id>
+        <type>regular</type>
+        <sourceId>5</sourceId>
+        <destinationId>6</destinationId>
+        <multiplicity>1</multiplicity>
+    </arc>
+</document>
