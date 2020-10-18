@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://modeler.netgrif.com/petriflow_schema.xsd">
-    <id>objednavka_piva_3_6</id>
+    <id>objednavka</id>
     <version>1.0.0</version>
     <initials>NEW</initials>
-    <title>Objednávka piva 3_6</title>
+    <title>Objednávka piva</title>
     <icon>home</icon>
     <defaultRole>true</defaultRole>
     <transitionRole>false</transitionRole>
@@ -17,8 +17,8 @@
         <id>zakaznik</id>
         <title>Zákazník</title>
     </role>
-    <!-- DATA -->
 
+    <!-- DATA -->
     <data type="enumeration">
         <id>druhy_piva</id>
         <title></title>
@@ -28,7 +28,6 @@
         <values>Porter</values>
         <init>IPA</init>
     </data>
-
     <!-- First beer card -->
     <data type="enumeration">
         <id>typPiva1</id>
@@ -40,7 +39,6 @@
             change pivo choices { choices }
         </action>
     </data>
-
     <data type="number">
         <id>pocetKusov1</id>
         <title>Množstvo piva</title>
@@ -57,7 +55,6 @@
 
         </action>
     </data>
-
     <data type="button">
         <id>odstranit_pivo_1</id>
         <title>Odstrániť pivo</title>
@@ -70,8 +67,7 @@
             def choices = useCase.petriNet.dataSet["druhy_piva"].choices
             change pivo choices { choices }
 
-            def zero = 0
-            change mnozstvo_piva zero { zero }
+            change value mnozstvo_piva { 0 }
 
             make pridat_pivo2, hidden on trans when { true }
 
@@ -117,6 +113,18 @@
     <data type="number">
         <id>pocetKusov2</id>
         <title>Množstvo piva</title>
+        <init>1</init>
+        <action trigger="set">
+            pivo: f.typPiva2,
+            mnozstvo_piva: f.pocetKusov2,
+            transition: t.2,
+            button: f.pridat_pivo_3;
+
+            if (pivo.value &amp;&amp; mnozstvo_piva.value &gt; 0) {
+                make button, editable on transition when { true }
+            }
+
+        </action>
     </data>
     <data type="button">
         <id>odstranit_pivo_2</id>
@@ -337,6 +345,32 @@
             <offset>0</offset>
         </layout>
         <label>Dokončiť objednávku</label>
+        <event type="finish">
+            <id>1</id>
+            <actions phase="pre">
+                <action>
+                    mnozstvo_piva1: f.pocetKusov1,
+                    mnozstvo_piva2: f.pocetKusov2,
+                    mnozstvo_piva3: f.pocetKusov3,
+                    pivo1: f.typPiva1,
+                    pivo2: f.typPiva2,
+                    pivo3: f.typPiva3;
+
+                    def newCase = createCase("spracovanie_objednavky", "objednavka")
+
+                    newCase.dataSet["pocetKusov1"].value = mnozstvo_piva1.value
+                    newCase.dataSet["pocetKusov2"].value = mnozstvo_piva2.value
+                    newCase.dataSet["pocetKusov3"].value = mnozstvo_piva3.value
+
+                    newCase.dataSet["typPiva1"].value = typPiva1.value
+                    newCase.dataSet["typPiva2"].value = typPiva2.value
+                    newCase.dataSet["typPiva3"].value = typPiva3.value
+
+                    workflowService.save(newCase)
+
+                </action>
+            </actions>
+        </event>
     </transition>
     <!-- PLACES -->
     <place>
