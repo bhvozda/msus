@@ -152,13 +152,11 @@
             pivo: f.typPiva3,
             mnozstvo_piva: f.pocetKusov3,
             disField: f.pridat_pivo_3,
-            pridat_pivo: f.pridat_pivo_4,
             odstranit_pivo: f.odstranit_pivo_3,
             trans: t.2;
 
             make pivo, required on trans when { true }
             make mnozstvo_piva, required on trans when { true }
-            make pridat_pivo, editable on trans when { true }
             make odstranit_pivo, editable on trans when { true }
 
             make disField, hidden on trans when { true }
@@ -181,6 +179,7 @@
         <id>pocetKusov3</id>
         <title>Množstvo piva</title>
     </data>
+
     <data type="button">
         <id>odstranit_pivo_3</id>
         <title>Odstrániť pivo</title>
@@ -188,7 +187,6 @@
             pivo: f.typPiva3,
             mnozstvo_piva: f.pocetKusov3,
             disField: f.odstranit_pivo_3,
-            pridat_pivo: f.pridat_pivo_4,
             trans: t.2;
 
             make pivo, optional on trans when { true }
@@ -200,61 +198,6 @@
             make disField, hidden on trans when { true }
             make disField, optional on trans when { true }
 
-            make pridat_pivo, hidden on trans when { true }
-            make pridat_pivo, optional on trans when { true }
-
-        </action>
-    </data>
-    <data type="button">
-        <id>pridat_pivo_4</id>
-        <title>Pridať ďalšie pivo</title>
-        <action trigger="set">
-            pivo: f.pivo4,
-            mnozstvo_piva: f.mnozstvo_piva4,
-            odstranit_pivo: f.odstranit_pivo_4,
-            disField: f.pridat_pivo_4,
-            trans: t.2;
-
-            make pivo, required on trans when { true }
-            make mnozstvo_piva, required on trans when { true }
-            make disField, hidden on trans when { true }
-            make disField, optional on trans when { true }
-            make odstranit_pivo, editable on trans when { true }
-        </action>
-    </data>
-
-    <!-- TODO: remove  -->
-    <data type="enumeration">
-        <id>pivo4</id>
-        <title>Vyber si druh piva</title>
-        <action trigger="get">
-            pivo: f.typPiva3;
-
-            def choices = useCase.petriNet.dataSet["druhy_piva"].choices
-            change pivo choices { choices }
-        </action>
-    </data>
-    <data type="number">
-        <id>mnozstvo_piva4</id>
-        <title>Množstvo piva</title>
-    </data>
-    <data type="button">
-        <id>odstranit_pivo_4</id>
-        <title>Odstrániť pivo</title>
-        <action trigger="set">
-            pivo: f.pivo4,
-            mnozstvo_piva: f.mnozstvo_piva4,
-            disField: f.odstranit_pivo_4,
-            trans: t.2;
-
-            make pivo, optional on trans when { true }
-            make pivo, hidden on trans when { true }
-
-            make mnozstvo_piva, optional on trans when { true }
-            make mnozstvo_piva, hidden on trans when { true }
-
-            make disField, hidden on trans when { true }
-            make disField, optional on trans when { true }
         </action>
     </data>
     <!-- I18NS -->
@@ -357,34 +300,6 @@
             </dataRef>
             <dataRef>
                 <id>odstranit_pivo_3</id>
-                <logic>
-                    <behavior>hidden</behavior>
-                </logic>
-            </dataRef>
-            <dataRef>
-                <id>pridat_pivo_4</id>
-                <logic>
-                    <behavior>hidden</behavior>
-                </logic>
-            </dataRef>
-        </dataGroup>
-        <dataGroup>
-            <id>4</id>
-            <title>Vyber si pivo 4</title>
-            <dataRef>
-                <id>pivo4</id>
-                <logic>
-                    <behavior>hidden</behavior>
-                </logic>
-            </dataRef>
-            <dataRef>
-                <id>mnozstvo_piva4</id>
-                <logic>
-                    <behavior>hidden</behavior>
-                </logic>
-            </dataRef>
-            <dataRef>
-                <id>odstranit_pivo_4</id>
                 <logic>
                     <behavior>hidden</behavior>
                 </logic>
