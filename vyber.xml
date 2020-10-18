@@ -22,47 +22,48 @@
     <data type="enumeration">
         <id>druhy_piva</id>
         <title></title>
-        <values>12</values>
         <values>IPA</values>
-        <values>Čierne</values>
         <values>APA</values>
-        <values>EPA</values>
-        <values>EJL</values>
-        <values>14</values>
-        <values>Radler</values>
+        <values>ALE</values>
+        <values>Porter</values>
+        <init>IPA</init>
     </data>
 
+    <!-- First beer card -->
     <data type="enumeration">
-        <id>pivo1</id>
+        <id>typPiva1</id>
         <title>Vyber si druh piva</title>
         <action trigger="get">
-            pivo: f.pivo1;
+            pivo: f.typPiva1;
 
             def choices = useCase.petriNet.dataSet["druhy_piva"].choices
             change pivo choices { choices }
         </action>
     </data>
+
     <data type="number">
-        <id>mnozstvo_piva1</id>
+        <id>pocetKusov1</id>
         <title>Množstvo piva</title>
+        <init>1</init>
         <action trigger="set">
-            pivo: f.pivo1,
-            mnozstvo_piva: f.mnozstvo_piva1,
+            pivo: f.typPiva1,
+            mnozstvo_piva: f.pocetKusov1,
             transition: t.2,
             button: f.pridat_pivo_2;
 
             if (pivo.value &amp;&amp; mnozstvo_piva.value &gt; 0) {
-            make button, editable on transition when { true }
+                make button, editable on transition when { true }
             }
 
         </action>
     </data>
+
     <data type="button">
         <id>odstranit_pivo_1</id>
         <title>Odstrániť pivo</title>
         <action trigger="set">
-            pivo: f.pivo1,
-            mnozstvo_piva: f.mnozstvo_piva1,
+            pivo: f.typPiva1,
+            mnozstvo_piva: f.pocetKusov1,
             disField: f.odstranit_pivo_1,
             trans: t.2;
 
@@ -82,19 +83,19 @@
         <id>pridat_pivo_2</id>
         <title>Pridať ďalšie pivo</title>
         <action trigger="set">
-            pivo2: f.pivo2,
-            mnozstvo_piva2: f.mnozstvo_piva2,
+            pivo: f.typPiva2,
+            pocetKusov2: f.pocetKusov2,
             disField: f.pridat_pivo_2,
-            <!--            odstranit_pivo1: f.odstranit_pivo_1,-->
+            odstranit_pivo1: f.odstranit_pivo_1,
             odstranit_pivo2: f.odstranit_pivo_2,
             pridat_pivo: f.pridat_pivo_3,
             trans: t.2;
 
-            make pivo2, required on trans when { true }
-            make mnozstvo_piva2, required on trans when { true }
+            make pivo, required on trans when { true }
+            make pocetKusov2, required on trans when { true }
 
             make pridat_pivo, editable on trans when { true }
-            <!--            make odstranit_pivo1, editable on trans when { true }-->
+            make odstranit_pivo1, editable on trans when { true }
             make odstranit_pivo2, editable on trans when { true }
 
             make disField, hidden on trans when { true }
@@ -102,26 +103,27 @@
         </action>
     </data>
 
+    <!-- Second beer card -->
     <data type="enumeration">
-        <id>pivo2</id>
+        <id>typPiva2</id>
         <title>Vyber si druh piva</title>
         <action trigger="get">
-            pivo: f.pivo2;
+            pivo: f.typPiva2;
 
             def choices = useCase.petriNet.dataSet["druhy_piva"].choices
             change pivo choices { choices }
         </action>
     </data>
     <data type="number">
-        <id>mnozstvo_piva2</id>
+        <id>pocetKusov2</id>
         <title>Množstvo piva</title>
     </data>
     <data type="button">
         <id>odstranit_pivo_2</id>
         <title>Odstrániť pivo</title>
         <action trigger="set">
-            pivo: f.pivo2,
-            mnozstvo_piva: f.mnozstvo_piva2,
+            pivo: f.typPiva2,
+            mnozstvo_piva: f.pocetKusov2,
             disField: f.odstranit_pivo_2,
             pridat_pivo: f.pridat_pivo_3,
             pridat_pivo2: f.pridat_pivo_2,
@@ -147,8 +149,8 @@
         <id>pridat_pivo_3</id>
         <title>Pridať ďalšie pivo</title>
         <action trigger="set">
-            pivo: f.pivo3,
-            mnozstvo_piva: f.mnozstvo_piva3,
+            pivo: f.typPiva3,
+            mnozstvo_piva: f.pocetKusov3,
             disField: f.pridat_pivo_3,
             pridat_pivo: f.pridat_pivo_4,
             odstranit_pivo: f.odstranit_pivo_3,
@@ -164,26 +166,27 @@
         </action>
     </data>
 
+    <!-- Third beer card -->
     <data type="enumeration">
-        <id>pivo3</id>
+        <id>typPiva3</id>
         <title>Vyber si druh piva</title>
         <action trigger="get">
-            pivo: f.pivo3;
+            pivo: f.typPiva3;
 
             def choices = useCase.petriNet.dataSet["druhy_piva"].choices
             change pivo choices { choices }
         </action>
     </data>
     <data type="number">
-        <id>mnozstvo_piva3</id>
+        <id>pocetKusov3</id>
         <title>Množstvo piva</title>
     </data>
     <data type="button">
         <id>odstranit_pivo_3</id>
         <title>Odstrániť pivo</title>
         <action trigger="set">
-            pivo: f.pivo3,
-            mnozstvo_piva: f.mnozstvo_piva3,
+            pivo: f.typPiva3,
+            mnozstvo_piva: f.pocetKusov3,
             disField: f.odstranit_pivo_3,
             pridat_pivo: f.pridat_pivo_4,
             trans: t.2;
@@ -220,11 +223,12 @@
         </action>
     </data>
 
+    <!-- TODO: remove  -->
     <data type="enumeration">
         <id>pivo4</id>
         <title>Vyber si druh piva</title>
         <action trigger="get">
-            pivo: f.pivo3;
+            pivo: f.typPiva3;
 
             def choices = useCase.petriNet.dataSet["druhy_piva"].choices
             change pivo choices { choices }
@@ -282,14 +286,14 @@
             <id>1</id>
             <title>Vyber si pivo</title>
             <dataRef>
-                <id>pivo1</id>
+                <id>typPiva1</id>
                 <logic>
                     <behavior>required</behavior>
                     <behavior>editable</behavior>
                 </logic>
             </dataRef>
             <dataRef>
-                <id>mnozstvo_piva1</id>
+                <id>pocetKusov1</id>
                 <logic>
                     <behavior>required</behavior>
                     <behavior>editable</behavior>
@@ -306,13 +310,13 @@
             <id>2</id>
             <title>Vyber si pivo 2</title>
             <dataRef>
-                <id>pivo2</id>
+                <id>typPiva2</id>
                 <logic>
                     <behavior>hidden</behavior>
                 </logic>
             </dataRef>
             <dataRef>
-                <id>mnozstvo_piva2</id>
+                <id>pocetKusov2</id>
                 <logic>
                     <behavior>hidden</behavior>
                 </logic>
@@ -340,13 +344,13 @@
             <id>3</id>
             <title>Vyber si pivo 3</title>
             <dataRef>
-                <id>pivo3</id>
+                <id>typPiva3</id>
                 <logic>
                     <behavior>hidden</behavior>
                 </logic>
             </dataRef>
             <dataRef>
-                <id>mnozstvo_piva3</id>
+                <id>pocetKusov3</id>
                 <logic>
                     <behavior>hidden</behavior>
                 </logic>
